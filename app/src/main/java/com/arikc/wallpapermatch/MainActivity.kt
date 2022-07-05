@@ -44,10 +44,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 currentPhotoURL = unsplashService.getRandomPhoto()
                 Handler(Looper.getMainLooper()).post {
-                    Picasso.get().load(currentPhotoURL).resize(
-                        constraintLayout?.width?.minus(100) ?: 900,
-                        constraintLayout?.height?.minus(200) ?: 1800
-                    ).into(imageView, object : Callback {
+                    Picasso.get().load(currentPhotoURL).into(imageView, object : Callback {
                         override fun onSuccess() {
                             val imageBitmap = (imageView?.drawable as BitmapDrawable).bitmap
                             val imageDrawable = RoundedBitmapDrawableFactory.create(
