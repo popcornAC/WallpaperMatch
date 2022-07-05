@@ -12,7 +12,7 @@ object UnsplashRetrofitClient {
             .Builder().addInterceptor(Interceptor {
                 val builder = it.request().newBuilder()
                 builder.header("Accept-Version", "v1")
-                builder.header("Authorization", "Client-ID juwvEs8c_ZkSsa9vcZAyjn2_xFsnjYOmcVsP5wxLV0A")
+                builder.header("Authorization", "Client-ID INSERT API KEY HERE")
                 return@Interceptor it.proceed(builder.build())
             })
             .build()
