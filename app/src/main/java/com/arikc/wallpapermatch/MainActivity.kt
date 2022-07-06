@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             Log.d("orientation", "We found a value in the instance state")
             currentPhotoURL = savedInstanceState.get("currentPhotoURL") as String?
+            loadCurrentPhotoIntoImageView()
         }
 
     }
@@ -44,23 +45,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 currentPhotoURL = unsplashService.getRandomPhoto()
                 Handler(Looper.getMainLooper()).post {
-                    Picasso.get().load(currentPhotoURL).into(imageView, object : Callback {
-                        override fun onSuccess() {
-                            val imageBitmap = (imageView?.drawable as BitmapDrawable).bitmap
-                            val imageDrawable = RoundedBitmapDrawableFactory.create(
-                                resources, imageBitmap
-                            )
-                            imageDrawable.isCircular = true
-                            imageDrawable.cornerRadius =
-                                max(imageBitmap.width, imageBitmap.height) / 15.0f
-                            imageView!!.setImageDrawable(imageDrawable)
-                        }
-
-                        override fun onError(e: Exception?) {
-                            imageView?.setImageResource(R.drawable.ic_launcher_foreground)
-                        }
-
-                    })
+                    loadCurrentPhotoIntoImageView()
                 }
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.e("failed in main", it) }
@@ -68,6 +53,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadCurrentPhotoIntoImageView() {
+        Picasso.get().load(currentPhotoURL).into(imageView, object: Callback {
+            override fun onSuccess() {
+                val imageBitmap = (imageView?.drawable as BitmapDrawable).bitmap
+                val imageDrawable = RoundedBitmapDrawableFactory.create(
+                    resources, imageBitmap
+                )
+                imageDrawable.isCircular = true
+                imageDrawable.cornerRadius =
+                    max(imageBitmap.width, imageBitmap.height) / 15.0f
+                imageView!!.setImageDrawable(imageDrawable)
+            }
+
+            override fun onError(e: java.lang.Exception?) {
+                imageView?.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+
+        })
+
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (currentPhotoURL != null) {
