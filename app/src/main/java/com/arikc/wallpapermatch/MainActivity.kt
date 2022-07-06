@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (currentPhotoURL != null) {
